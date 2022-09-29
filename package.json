@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "init:config": "sequelize init:config",
+    "db:config": "sequelize init:config",
     "db:create": "sequelize db:create",
     "watch": "nodemon index.js",
     "test-watch": "jest --watchAll --verbose --coverage",
