@@ -1,9 +1,17 @@
 'use strict';
 
-require('dotenv').config();
-const app = require('./src/server.js');
+const { start } = require('./src/server.js');
 const { db } = require('./src/models');
 
-db.sync().then(() => {
-  app.start(process.env.PORT || 3002);
-});
+async function startServer() {
+  try {
+    await db.sync();
+    console.log('Database successfully connected');
+    start(process.env.PORT || 3002);
+  } catch (e) {
+    console.error('Error in startServer:', e.message);
+    throw new Error(e);
+  }
+}
+
+startServer();

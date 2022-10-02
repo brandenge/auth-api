@@ -18,7 +18,7 @@ const userModel = (sequelize, DataTypes) => {
       set(tokenObj) {
         let token = jwt.sign(tokenObj, SECRET);
         return token;
-      }
+      },
     },
     capabilities: {
       type: DataTypes.VIRTUAL,
@@ -27,37 +27,47 @@ const userModel = (sequelize, DataTypes) => {
           user: ['read'],
           writer: ['read', 'create'],
           editor: ['read', 'create', 'update'],
-          admin: ['read', 'create', 'update', 'delete']
+          admin: ['read', 'create', 'update', 'delete'],
         };
         return acl[this.role];
-      }
-    }
+      },
+    },
   });
 
   model.beforeCreate(async (user) => {
-    let hashedPass = await bcrypt.hash(user.password, 10);
-    user.password = hashedPass;
+    try {
+      let hashedPass = await bcrypt.hash(user.password, 10);
+      user.password = hashedPass;
+    } catch (e) {
+      console.error('Error in beforeCreate:', e.message);
+      throw new Error(e);
+    }
   });
 
   model.authenticateBasic = async function (username, password) {
-    const user = await this.findOne({ where: { username } });
-    const valid = await bcrypt.compare(password, user.password);
-    if (valid) { return user; }
-    throw new Error('Invalid User');
+    try {
+      const user = await this.findOne({ where: { username } });
+      const valid = await bcrypt.compare(password, user.password);
+      if (valid) return user;
+      else throw new Error('Invalid User');
+    } catch (e) {
+      console.error('Error in authenticateBasic:', e.message);
+      throw new Error(e);
+    }
   };
 
   model.authenticateToken = async function (token) {
     try {
       const parsedToken = jwt.verify(token, SECRET);
-      const user = this.findOne({where: { username: parsedToken.username } });
-      if (user) { return user; }
-      throw new Error("User Not Found");
+      const user = await this.findOne({where: { username: parsedToken.username } });
+      if (user) return user;
+      else throw new Error('User Not Found');
     } catch (e) {
-      throw new Error(e.message)
+      console.error('Error in authenticateToken:', e.message);
+      throw new Error(e);
     }
   };
-
   return model;
-}
+};
 
 module.exports = userModel;
