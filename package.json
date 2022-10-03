@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "db:config": "sequelize init:config",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "db:config": "NODE_ENV=development sequelize init:config",
     "db:create": "sequelize db:create",
     "db:drop": "sequelize db:drop",
-    "watch": "nodemon index.js",
-    "test-watch": "jest --watchAll --verbose --coverage",
-    "test": "jest --verbose --coverage"
+    "watch": "NODE_ENV=development nodemon index.js",
+    "test-watch": "NODE_ENV=test jest --watchAll --verbose --coverage",
+    "test": "NODE_ENV=test jest --verbose --coverage"
   },
   "jest": {
     "testEnvironment": "node"

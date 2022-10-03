@@ -3,21 +3,33 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const SECRET = process.env.SECRET || 'secretstring';
+const SECRET = process.env.SECRET || 'TEST_SECRET';
 
 const userModel = (sequelize, DataTypes) => {
   const model = sequelize.define('Users', {
-    username: { type: DataTypes.STRING, required: true, unique: true },
-    password: { type: DataTypes.STRING, required: true },
-    role: { type: DataTypes.ENUM('user', 'writer', 'editor', 'admin'), required: true, defaultValue: 'user'},
+    username: {
+      type: DataTypes.STRING,
+      required: true,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      required: true,
+      allowNull: false,
+    },
+    role: {
+      type: DataTypes.ENUM('user', 'writer', 'editor', 'admin'),
+      required: true,
+      defaultValue: 'user',
+    },
     token: {
       type: DataTypes.VIRTUAL,
       get() {
-        return jwt.sign({ username: this.username }, SECRET);
+        return jwt.sign({ username: this.username }, SECRET, { expiresIn: '15m' });
       },
-      set(tokenObj) {
-        let token = jwt.sign(tokenObj, SECRET);
-        return token;
+      set(token) {
+        return jwt.sign(token, SECRET, { expiresIn: '15m' });
       },
     },
     capabilities: {

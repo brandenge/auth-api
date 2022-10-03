@@ -17,17 +17,18 @@ authRouter.post('/signup', async (req, res, next) => {
     };
     res.status(201).json(output);
   } catch (e) {
-    console.error('Error in /signup route:', e.message);
-    next(e);
+    console.error('Error in the /signup route:', e.message);
+    res.status(403).send('There was an error creating the user');
   }
 });
 
 authRouter.post('/signin', basicAuth, (req, res, next) => {
-  const user = {
-    user: req.user,
-    token: req.user.token,
-  };
-  res.status(200).json(user);
+  try {
+    res.status(200).json(req.user);
+  } catch (e) {
+    console.error('Error in the /signin route');
+    next(e);
+  }
 });
 
 authRouter.get('/users', bearerAuth, permissions('delete'), async (req, res, next) => {
@@ -36,7 +37,7 @@ authRouter.get('/users', bearerAuth, permissions('delete'), async (req, res, nex
     const list = userRecords.map(user => user.username);
     res.status(200).json(list);
   } catch (e) {
-    console.error('Error in /users route:', e.message);
+    console.error('Error in the /users route:', e.message);
     next(e);
   }
 });
