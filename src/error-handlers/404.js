@@ -1,11 +1,10 @@
 'use strict';
 
-function handle404(req, res, next) {
+module.exports = function (req, res, next) {
   const errorObject = {
-    status: 404,
-    message: 'Sorry, we could not find what you were looking for'
+    error: 404,
+    route: req.originalUrl,
+    message: 'Sorry, we could not find what you were looking for',
   };
-  res.status(404).json(errorObject);
-}
-
-module.exports = handle404;
+  res.status(404).send(errorObject);
+};
