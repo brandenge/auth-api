@@ -28,18 +28,18 @@ This lab demonstrates how to implement an Express API complete with authenticati
 v1 Model Routes
 
 - GET : `/api/v1/clothes` or `/api/v1/food`
-- GET : `/api/v1/clothes/:id` or `/api/v1/food:id`
+- GET : `/api/v1/clothes/id` or `/api/v1/food/id`
 - POST : `/api/v1/clothes` or `/api/v1/food`
-- PUT : `/api/v1/clothes` or `/api/v1/food`
-- DELETE : `/api/v1/clothes` or `/api/v1/food`
+- PUT : `/api/v1/clothes/id` or `/api/v1/food/id`
+- DELETE : `/api/v1/clothes/id` or `/api/v1/food/id`
 
 v2 Model Routes with Authentication
 
 - GET : `/api/v2/clothes` or `/api/v2/food`
-- GET : `/api/v2/clothes/:id` or `/api/v2/food:id`
+- GET : `/api/v2/clothes/id` or `/api/v2/food/id`
 - POST : `/api/v2/clothes` or `/api/v2/food`
-- PUT : `/api/v2/clothes` or `/api/v2/food`
-- DELETE : `/api/v2/clothes` or `/api/v2/food`
+- PUT : `/api/v2/clothes/id` or `/api/v2/food/id`
+- DELETE : `/api/v2/clothes/id` or `/api/v2/food/id`
 
 Auth Routes
 
